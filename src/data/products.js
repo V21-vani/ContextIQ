@@ -1,490 +1,85 @@
 /**
  * @fileoverview products.js — ContextIQ synthetic product catalogue
  *
- * 30 products across 6 categories (5 each):
- *   wellness | tech | food | fashion | home | fitness
- *
- * Each product carries contextTags so Claude can apply context-aware ranking.
- *
- * Usage:
- *   import products, { getProductById, getProductsByIds } from './products';
+ * 30 synthetic products tagged with context signals.
+ * Tags: morning, midday, evening, late-night, commute, office, home, out,
+ *       focused, browsing, relaxed, adventurous, spontaneous
  */
-
-/** @type {Object[]} */
 const products = [
+  // ── Coffee & Drinks ──
+  { id: 1,  name: 'Cold Brew Concentrate',       price: 14.99, emoji: '☕', category: 'Drinks',       tags: ['morning', 'focused', 'office'],            desc: 'Smooth, low-acid cold brew for sharp mornings.' },
+  { id: 2,  name: 'Matcha Latte Kit',             price: 22.00, emoji: '🍵', category: 'Drinks',       tags: ['morning', 'relaxed', 'home'],               desc: 'Ceremonial-grade matcha with a bamboo whisk.' },
+  { id: 3,  name: 'Sparkling Water Variety Pack',  price: 9.99,  emoji: '💧', category: 'Drinks',       tags: ['midday', 'office', 'focused'],              desc: '12-can mix of lime, grapefruit & plain.' },
+  { id: 4,  name: 'Chamomile Sleep Tea',           price: 8.50,  emoji: '🫖', category: 'Drinks',       tags: ['late-night', 'relaxed', 'home'],            desc: 'Organic chamomile blend for winding down.' },
+  { id: 5,  name: 'Protein Smoothie Mix',          price: 29.99, emoji: '🥤', category: 'Drinks',       tags: ['morning', 'commute', 'focused'],            desc: 'Whey isolate + greens, just add water.' },
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // WELLNESS  (5)
-  // ═══════════════════════════════════════════════════════════════════════════
-  {
-    id: 'prod_001',
-    name: 'Morning Flow Yoga Mat',
-    category: 'wellness',
-    price: 54.99,
-    image: 'https://picsum.photos/seed/prod_001/300/300',
-    description: 'A non-slip, eco-friendly yoga mat designed for grounding morning flow sessions.',
-    contextTags: {
-      timeOfDay: ['morning'],
-      mood: ['focused', 'relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 1,
-  },
-  {
-    id: 'prod_002',
-    name: 'Calm Mind Meditation App — 3 Month Pass',
-    category: 'wellness',
-    price: 29.99,
-    image: 'https://picsum.photos/seed/prod_002/300/300',
-    description: 'Guided meditations, sleep stories, and breathing exercises for daily mindfulness.',
-    contextTags: {
-      timeOfDay: ['morning', 'latenight'],
-      mood: ['relaxed'],
-      locationType: ['home', 'commute'],
-    },
-    baseRank: 2,
-  },
-  {
-    id: 'prod_003',
-    name: 'AromaZen Essential Oil Diffuser',
-    category: 'wellness',
-    price: 42.99,
-    image: 'https://picsum.photos/seed/prod_003/300/300',
-    description: 'Ultrasonic aromatherapy diffuser with 7-colour ambient glow for calming evenings.',
-    contextTags: {
-      timeOfDay: ['evening', 'latenight'],
-      mood: ['relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 3,
-  },
-  {
-    id: 'prod_004',
-    name: 'DreamTrack Sleep Journal',
-    category: 'wellness',
-    price: 18.99,
-    image: 'https://picsum.photos/seed/prod_004/300/300',
-    description: 'A structured nightly journal to track sleep quality and morning mood patterns.',
-    contextTags: {
-      timeOfDay: ['latenight', 'morning'],
-      mood: ['focused', 'relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 4,
-  },
-  {
-    id: 'prod_005',
-    name: 'Luxe Lavender Bath & Body Set',
-    category: 'wellness',
-    price: 38.99,
-    image: 'https://picsum.photos/seed/prod_005/300/300',
-    description: 'A curated set of lavender bath salts, body scrub, and lotion for evening unwinding.',
-    contextTags: {
-      timeOfDay: ['evening', 'latenight'],
-      mood: ['relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 5,
-  },
+  // ── Snacks & Food ──
+  { id: 6,  name: 'Overnight Oats Cup',            price: 4.99,  emoji: '🥣', category: 'Food',         tags: ['morning', 'commute', 'relaxed'],            desc: 'Grab-and-go oats with chia and berries.' },
+  { id: 7,  name: 'Trail Mix Energy Bites',        price: 12.99, emoji: '🥜', category: 'Food',         tags: ['midday', 'commute', 'adventurous'],         desc: 'Date-cashew bites for an afternoon boost.' },
+  { id: 8,  name: 'Artisan Dark Chocolate Bar',    price: 7.50,  emoji: '🍫', category: 'Food',         tags: ['evening', 'relaxed', 'home'],               desc: '72% single-origin with sea salt flakes.' },
+  { id: 9,  name: 'Gourmet Popcorn Trio',          price: 15.00, emoji: '🍿', category: 'Food',         tags: ['evening', 'relaxed', 'home'],               desc: 'Truffle, caramel & classic butter flavours.' },
+  { id: 10, name: 'Instant Ramen Bowl Pack',       price: 18.99, emoji: '🍜', category: 'Food',         tags: ['late-night', 'home', 'spontaneous'],        desc: 'Premium tonkotsu, miso & shoyu — 6 pack.' },
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // TECH  (5)
-  // ═══════════════════════════════════════════════════════════════════════════
-  {
-    id: 'prod_006',
-    name: 'AeroPulse Pro Noise-Cancelling Earbuds',
-    category: 'tech',
-    price: 129.99,
-    image: 'https://picsum.photos/seed/prod_006/300/300',
-    description: 'True wireless earbuds with adaptive noise cancellation and 36-hour battery life.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday', 'commute'],
-      mood: ['focused', 'browsing'],
-      locationType: ['commute', 'office'],
-    },
-    baseRank: 6,
-  },
-  {
-    id: 'prod_007',
-    name: 'QuickCharge 20 000mAh Power Bank',
-    category: 'tech',
-    price: 49.99,
-    image: 'https://picsum.photos/seed/prod_007/300/300',
-    description: 'Slim, high-capacity power bank supporting 45W USB-C fast charging for all devices.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday'],
-      mood: ['focused', 'browsing'],
-      locationType: ['commute', 'office', 'out'],
-    },
-    baseRank: 7,
-  },
-  {
-    id: 'prod_008',
-    name: 'HydroTrack Smart Water Bottle',
-    category: 'tech',
-    price: 59.99,
-    image: 'https://picsum.photos/seed/prod_008/300/300',
-    description: 'LED hydration reminder bottle that syncs with your phone to hit daily water goals.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday'],
-      mood: ['focused'],
-      locationType: ['office', 'home', 'commute'],
-    },
-    baseRank: 8,
-  },
-  {
-    id: 'prod_009',
-    name: 'RingLux Selfie Ring Light & Phone Stand',
-    category: 'tech',
-    price: 34.99,
-    image: 'https://picsum.photos/seed/prod_009/300/300',
-    description: 'Adjustable ring light with flexible phone mount for video calls and social content.',
-    contextTags: {
-      timeOfDay: ['midday', 'evening'],
-      mood: ['browsing'],
-      locationType: ['home', 'office'],
-    },
-    baseRank: 9,
-  },
-  {
-    id: 'prod_010',
-    name: 'MagDrop Wireless Charging Pad',
-    category: 'tech',
-    price: 29.99,
-    image: 'https://picsum.photos/seed/prod_010/300/300',
-    description: 'MagSafe-compatible 15W wireless charging pad with anti-slip surface.',
-    contextTags: {
-      timeOfDay: ['latenight', 'morning'],
-      mood: ['relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 10,
-  },
+  // ── Tech & Gadgets ──
+  { id: 11, name: 'Noise-Cancelling Earbuds',      price: 79.99, emoji: '🎧', category: 'Tech',         tags: ['commute', 'focused', 'office'],             desc: 'ANC earbuds with 30 h battery & transparency mode.' },
+  { id: 12, name: 'Portable Charger 10K',          price: 24.99, emoji: '🔋', category: 'Tech',         tags: ['commute', 'out', 'adventurous'],            desc: 'Slim 10 000 mAh bank with fast charging.' },
+  { id: 13, name: 'Smart Desk Lamp',               price: 45.00, emoji: '💡', category: 'Tech',         tags: ['evening', 'focused', 'office'],             desc: 'Colour-temp adjustable LED with USB port.' },
+  { id: 14, name: 'Mini Bluetooth Speaker',         price: 34.99, emoji: '🔊', category: 'Tech',         tags: ['evening', 'relaxed', 'out'],                desc: 'Waterproof speaker that fits in your palm.' },
+  { id: 15, name: 'E-Reader Paperwhite',           price: 129.99,emoji: '📱', category: 'Tech',         tags: ['late-night', 'relaxed', 'home'],            desc: 'Glare-free display for comfortable night reading.' },
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // FOOD  (5)
-  // ═══════════════════════════════════════════════════════════════════════════
-  {
-    id: 'prod_011',
-    name: 'PressedPerk Cold Brew Coffee Kit',
-    category: 'food',
-    price: 27.99,
-    image: 'https://picsum.photos/seed/prod_011/300/300',
-    description: 'Everything you need to brew smooth, café-quality cold brew coffee at home.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday'],
-      mood: ['focused'],
-      locationType: ['home', 'office'],
-    },
-    baseRank: 11,
-  },
-  {
-    id: 'prod_012',
-    name: 'BlendFuel Protein Smoothie Bundle',
-    category: 'food',
-    price: 44.99,
-    image: 'https://picsum.photos/seed/prod_012/300/300',
-    description: 'Pre-portioned smoothie packs with 25 g of plant protein for fast morning prep.',
-    contextTags: {
-      timeOfDay: ['morning'],
-      mood: ['focused'],
-      locationType: ['home', 'commute'],
-    },
-    baseRank: 12,
-  },
-  {
-    id: 'prod_013',
-    name: 'MidnightMunch Snack Crate',
-    category: 'food',
-    price: 32.99,
-    image: 'https://picsum.photos/seed/prod_013/300/300',
-    description: 'A curated box of 20 indulgent late-night snacks from global artisan makers.',
-    contextTags: {
-      timeOfDay: ['latenight', 'evening'],
-      mood: ['relaxed', 'browsing'],
-      locationType: ['home'],
-    },
-    baseRank: 13,
-  },
-  {
-    id: 'prod_014',
-    name: 'TrailBlaze Commuter Granola Bars 12-Pack',
-    category: 'food',
-    price: 19.99,
-    image: 'https://picsum.photos/seed/prod_014/300/300',
-    description: 'Wholesome oat-and-nut bars with no added sugar, perfect for busy morning commutes.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday'],
-      mood: ['focused', 'browsing'],
-      locationType: ['commute', 'out'],
-    },
-    baseRank: 14,
-  },
-  {
-    id: 'prod_015',
-    name: 'PopCraft Gourmet Popcorn Trio',
-    category: 'food',
-    price: 22.99,
-    image: 'https://picsum.photos/seed/prod_015/300/300',
-    description: 'Three bold flavours of small-batch gourmet popcorn ideal for movie night at home.',
-    contextTags: {
-      timeOfDay: ['evening', 'latenight'],
-      mood: ['relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 15,
-  },
+  // ── Wellness ──
+  { id: 16, name: 'Foam Roller Set',               price: 19.99, emoji: '🧘', category: 'Wellness',     tags: ['morning', 'home', 'relaxed'],               desc: 'Textured foam roller + lacrosse ball.' },
+  { id: 17, name: 'Focus Nootropic Capsules',      price: 32.00, emoji: '🧠', category: 'Wellness',     tags: ['morning', 'office', 'focused'],             desc: "Lion's mane + L-theanine for calm clarity." },
+  { id: 18, name: 'Lavender Pillow Mist',          price: 11.99, emoji: '🌿', category: 'Wellness',     tags: ['late-night', 'home', 'relaxed'],            desc: 'Aromatherapy spray for deeper sleep.' },
+  { id: 19, name: 'Vitamin D3 Gummies',            price: 14.50, emoji: '☀️', category: 'Wellness',     tags: ['morning', 'home', 'relaxed'],               desc: 'Sunshine vitamin in a tasty citrus gummy.' },
+  { id: 20, name: 'Posture Corrector Band',        price: 21.00, emoji: '🩹', category: 'Wellness',     tags: ['midday', 'office', 'focused'],              desc: 'Discreet band that trains upright posture.' },
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // FASHION  (5)
-  // ═══════════════════════════════════════════════════════════════════════════
-  {
-    id: 'prod_016',
-    name: 'LensFlare Polarised Sunglasses',
-    category: 'fashion',
-    price: 69.99,
-    image: 'https://picsum.photos/seed/prod_016/300/300',
-    description: 'Lightweight polarised sunglasses with UV400 protection and a retro-modern frame.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday'],
-      mood: ['browsing'],
-      locationType: ['commute', 'out'],
-    },
-    baseRank: 16,
-  },
-  {
-    id: 'prod_017',
-    name: 'SweatWick Sport Headband',
-    category: 'fashion',
-    price: 14.99,
-    image: 'https://picsum.photos/seed/prod_017/300/300',
-    description: 'Moisture-wicking, double-layer headband for workouts and outdoor morning runs.',
-    contextTags: {
-      timeOfDay: ['morning'],
-      mood: ['focused'],
-      locationType: ['out', 'home'],
-    },
-    baseRank: 17,
-  },
-  {
-    id: 'prod_018',
-    name: 'UrbanChic Canvas Tote Bag',
-    category: 'fashion',
-    price: 39.99,
-    image: 'https://picsum.photos/seed/prod_018/300/300',
-    description: 'Durable, roomy canvas tote with a water-resistant lining for work and daily errands.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday'],
-      mood: ['focused', 'browsing'],
-      locationType: ['commute', 'office', 'out'],
-    },
-    baseRank: 18,
-  },
-  {
-    id: 'prod_019',
-    name: 'CloudStep Memory Foam Slippers',
-    category: 'fashion',
-    price: 34.99,
-    image: 'https://picsum.photos/seed/prod_019/300/300',
-    description: 'Plush memory-foam house slippers with a non-slip rubber sole for all-day comfort.',
-    contextTags: {
-      timeOfDay: ['evening', 'latenight'],
-      mood: ['relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 19,
-  },
-  {
-    id: 'prod_020',
-    name: 'CommuterFleece Zip Hoodie',
-    category: 'fashion',
-    price: 79.99,
-    image: 'https://picsum.photos/seed/prod_020/300/300',
-    description: 'Brushed-fleece, commuter-fit hoodie with a hidden earphone port and magnetic zip.',
-    contextTags: {
-      timeOfDay: ['morning', 'evening'],
-      mood: ['focused', 'browsing'],
-      locationType: ['commute', 'out'],
-    },
-    baseRank: 20,
-  },
+  // ── Entertainment ──
+  { id: 21, name: 'Pocket Puzzle Cube',            price: 6.99,  emoji: '🧩', category: 'Entertainment', tags: ['commute', 'browsing', 'spontaneous'],       desc: 'Speed cube for idle hands on the train.' },
+  { id: 22, name: 'Watercolour Sketch Set',        price: 28.00, emoji: '🎨', category: 'Entertainment', tags: ['evening', 'relaxed', 'home'],               desc: '24 pans + travel brush + cotton paper pad.' },
+  { id: 23, name: 'Board Game Night Bundle',       price: 39.99, emoji: '🎲', category: 'Entertainment', tags: ['evening', 'home', 'adventurous'],           desc: '3 party games for 4-8 players.' },
+  { id: 24, name: 'Streaming Gift Card $25',       price: 25.00, emoji: '🎬', category: 'Entertainment', tags: ['late-night', 'home', 'relaxed'],            desc: 'Works on all major streaming platforms.' },
+  { id: 25, name: 'Daily Journal Notebook',        price: 16.00, emoji: '📓', category: 'Entertainment', tags: ['morning', 'focused', 'home'],               desc: 'Guided prompts + dot-grid pages, 90 days.' },
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // HOME  (5)
-  // ═══════════════════════════════════════════════════════════════════════════
-  {
-    id: 'prod_021',
-    name: 'WarmGlow Soy Wax Candle Set',
-    category: 'home',
-    price: 36.99,
-    image: 'https://picsum.photos/seed/prod_021/300/300',
-    description: 'Hand-poured soy candles in amber, cedar and vanilla — perfect for cosy evenings.',
-    contextTags: {
-      timeOfDay: ['evening', 'latenight'],
-      mood: ['relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 21,
-  },
-  {
-    id: 'prod_022',
-    name: 'AmbientGlo Smart Desk Lamp',
-    category: 'home',
-    price: 64.99,
-    image: 'https://picsum.photos/seed/prod_022/300/300',
-    description: 'App-controlled LED desk lamp with circadian lighting modes and wireless charging base.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday', 'latenight'],
-      mood: ['focused'],
-      locationType: ['home', 'office'],
-    },
-    baseRank: 22,
-  },
-  {
-    id: 'prod_023',
-    name: 'MugHug USB Mug Warmer',
-    category: 'home',
-    price: 22.99,
-    image: 'https://picsum.photos/seed/prod_023/300/300',
-    description: 'Auto-temperature desktop mug warmer that keeps your coffee or tea at the perfect sip.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday'],
-      mood: ['focused'],
-      locationType: ['home', 'office'],
-    },
-    baseRank: 23,
-  },
-  {
-    id: 'prod_024',
-    name: 'CloudSoft 8 kg Weighted Blanket',
-    category: 'home',
-    price: 89.99,
-    image: 'https://picsum.photos/seed/prod_024/300/300',
-    description: 'Therapeutic weighted blanket with glass-bead fill for deep pressure and better sleep.',
-    contextTags: {
-      timeOfDay: ['evening', 'latenight'],
-      mood: ['relaxed'],
-      locationType: ['home'],
-    },
-    baseRank: 24,
-  },
-  {
-    id: 'prod_025',
-    name: 'SproutKit Indoor Herb Garden',
-    category: 'home',
-    price: 47.99,
-    image: 'https://picsum.photos/seed/prod_025/300/300',
-    description: 'Self-watering indoor herb garden with basil, mint and chive seed pods included.',
-    contextTags: {
-      timeOfDay: ['morning', 'evening'],
-      mood: ['relaxed', 'browsing'],
-      locationType: ['home'],
-    },
-    baseRank: 25,
-  },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // FITNESS  (5)
-  // ═══════════════════════════════════════════════════════════════════════════
-  {
-    id: 'prod_026',
-    name: 'FlexBand Pro Resistance Band Set',
-    category: 'fitness',
-    price: 29.99,
-    image: 'https://picsum.photos/seed/prod_026/300/300',
-    description: 'Five graduated resistance bands with handles and a carrying bag for home workouts.',
-    contextTags: {
-      timeOfDay: ['morning', 'evening'],
-      mood: ['focused'],
-      locationType: ['home', 'out'],
-    },
-    baseRank: 26,
-  },
-  {
-    id: 'prod_027',
-    name: 'ProStride Ultra Running Shoes',
-    category: 'fitness',
-    price: 129.99,
-    image: 'https://picsum.photos/seed/prod_027/300/300',
-    description: 'Responsive-cushioned running shoes with carbon-fibre plate for speed on any surface.',
-    contextTags: {
-      timeOfDay: ['morning'],
-      mood: ['focused'],
-      locationType: ['out', 'commute'],
-    },
-    baseRank: 27,
-  },
-  {
-    id: 'prod_028',
-    name: 'FrostPeak Insulated Gym Bottle',
-    category: 'fitness',
-    price: 24.99,
-    image: 'https://picsum.photos/seed/prod_028/300/300',
-    description: 'Double-wall insulated 1-litre bottle that keeps drinks ice cold for 24 hours.',
-    contextTags: {
-      timeOfDay: ['morning', 'midday'],
-      mood: ['focused'],
-      locationType: ['out', 'commute', 'office'],
-    },
-    baseRank: 28,
-  },
-  {
-    id: 'prod_029',
-    name: 'RollEase High-Density Foam Roller',
-    category: 'fitness',
-    price: 34.99,
-    image: 'https://picsum.photos/seed/prod_029/300/300',
-    description: 'Textured foam roller for deep-tissue muscle recovery and post-workout soreness relief.',
-    contextTags: {
-      timeOfDay: ['evening', 'morning'],
-      mood: ['relaxed', 'focused'],
-      locationType: ['home'],
-    },
-    baseRank: 29,
-  },
-  {
-    id: 'prod_030',
-    name: 'SpeedCord Weighted Jump Rope',
-    category: 'fitness',
-    price: 19.99,
-    image: 'https://picsum.photos/seed/prod_030/300/300',
-    description: 'Adjustable steel cable jump rope with weighted handles for cardio and coordination training.',
-    contextTags: {
-      timeOfDay: ['morning'],
-      mood: ['focused'],
-      locationType: ['home', 'out'],
-    },
-    baseRank: 30,
-  },
-];
+  // ── Fashion & Lifestyle ──
+  { id: 26, name: 'Merino Wool Beanie',            price: 28.00, emoji: '🧢', category: 'Fashion',      tags: ['commute', 'out', 'adventurous'],            desc: 'Breathable merino, perfect for brisk mornings.' },
+  { id: 27, name: 'UV-Block Sunglasses',           price: 35.00, emoji: '🕶️', category: 'Fashion',      tags: ['midday', 'out', 'adventurous'],             desc: 'Polarised lenses, lightweight titanium frame.' },
+  { id: 28, name: 'Cozy Lounge Socks (3-pk)',      price: 12.00, emoji: '🧦', category: 'Fashion',      tags: ['late-night', 'home', 'relaxed'],            desc: 'Sherpa-lined socks for maximum comfort.' },
+  { id: 29, name: 'Canvas Tote Bag',               price: 18.00, emoji: '👜', category: 'Fashion',      tags: ['midday', 'commute', 'browsing'],            desc: 'Heavy-duty organic cotton with zip pocket.' },
+  { id: 30, name: 'Silk Sleep Mask',               price: 15.99, emoji: '😴', category: 'Fashion',      tags: ['late-night', 'home', 'relaxed'],            desc: '100% mulberry silk, adjustable strap.' },
+]
 
 // ---------------------------------------------------------------------------
-// Named utility exports
+// Named utility exports (used by backend recommendation engine)
 // ---------------------------------------------------------------------------
 
 /**
  * Retrieve a single product by its ID.
- * @param {string} id
+ * @param {number} id
  * @returns {Object|undefined}
  */
 export function getProductById(id) {
-  return products.find((p) => p.id === id);
+  return products.find((p) => p.id === id)
+}
+
+/**
+ * Retrieve products whose tags intersect with the given context tags.
+ * @param {string[]} contextTags
+ * @returns {Object[]}
+ */
+export function getProductsByTags(contextTags = []) {
+  return products.filter((p) =>
+    p.tags.some((t) => contextTags.includes(t))
+  )
 }
 
 /**
  * Retrieve an ordered array of products matching the given IDs.
- * The result order matches the input `ids` array (preserves Claude's ranking).
- * IDs not found in the catalogue are silently omitted.
- *
- * @param {string[]} ids
+ * @param {number[]} ids
  * @returns {Object[]}
  */
 export function getProductsByIds(ids) {
-  return ids.map((id) => getProductById(id)).filter(Boolean);
+  return ids.map((id) => getProductById(id)).filter(Boolean)
 }
 
-// ---------------------------------------------------------------------------
-// Default export
-// ---------------------------------------------------------------------------
-
-export default products;
+export default products
