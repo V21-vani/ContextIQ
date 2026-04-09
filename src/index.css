@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Time-of-day theme tokens ──────────────────────────────────────────── */
+[data-theme="morning"] {
+  --accent:      #0EA5E9;
+  --accent-soft: #BAE6FD;
+  --bg-warm:     #F0F9FF;
+  --bg-card:     #FFFFFF;
+  --text-tone:   focused;
+  --gradient:    linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%);
+}
+
+[data-theme="midday"] {
+  --accent:      #10B981;
+  --accent-soft: #A7F3D0;
+  --bg-warm:     #F0FDF4;
+  --bg-card:     #FFFFFF;
+  --text-tone:   active;
+  --gradient:    linear-gradient(135deg, #10B981 0%, #34D399 100%);
+}
+
+[data-theme="evening"] {
+  --accent:      #F59E0B;
+  --accent-soft: #FDE68A;
+  --bg-warm:     #FFFBEB;
+  --bg-card:     #FFFFFF;
+  --text-tone:   social;
+  --gradient:    linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%);
+}
+
+[data-theme="latenight"] {
+  --accent:      #8B5CF6;
+  --accent-soft: #DDD6FE;
+  --bg-warm:     #FAF5FF;
+  --bg-card:     #1E1B2E;
+  --text-tone:   relaxed;
+  --gradient:    linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
+}
+
+/* ─── Base reset ────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-warm, #F0F9FF);
+  transition: background-color 0.6s ease;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
